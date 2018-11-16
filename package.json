@@ -1,0 +1,31 @@
+{
+  "name": "caballo-vivo",
+  "version": "0.0.0",
+  "description": "Caballo Vivo",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zambezi/caballo-vivo.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zambezi/caballo-vivo/issues"
+  },
+  "homepage": "https://github.com/zambezi/caballo-vivo#readme",
+  "dependencies": {
+    "history": "^4.7.2",
+    "immutable": "^4.0.0-rc.12",
+    "query-string": "^6.2.0",
+    "ramda": "^0.25.0",
+    "react": ">=15",
+    "react-router": "^4.3.1",
+    "rxjs": "^5.5.12"
+  },
+  "devDependencies": {
+    "rollup": "^0.67.1"
+  }
+}

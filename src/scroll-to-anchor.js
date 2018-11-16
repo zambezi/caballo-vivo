@@ -1,4 +1,4 @@
-import { Subject, Observable } from '@reactivex/rxjs'
+import { Subject, Observable } from 'rxjs'
 import log from './log'
 
 const scrollToAnchor$ = new Subject()
