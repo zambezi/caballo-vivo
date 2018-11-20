@@ -1,4 +1,4 @@
-import { Subject } from '@reactivex/rxjs'
+import { Subject } from 'rxjs'
 import log from './log'
 
 export const followLink$ = new Subject().do(log('Follow link'))

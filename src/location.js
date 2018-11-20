@@ -1,5 +1,5 @@
 import createHistory from 'history/createBrowserHistory'
-import { Observable, Scheduler } from '@reactivex/rxjs'
+import { Observable, Scheduler } from 'rxjs'
 import { fromJS, Set } from 'immutable'
 import { matchPath } from 'react-router'
 import { unary, toPairs, find, type, path } from 'ramda'
