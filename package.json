@@ -1,6 +1,6 @@
 {
-  "name": "caballo-vivo",
-  "version": "0.0.0",
+  "name": "@zambezi/caballo-vivo",
+  "version": "0.0.1",
   "description": "Caballo Vivo",
   "main": "",
   "scripts": {
