@@ -1,8 +1,8 @@
 import createHistory from 'history/createBrowserHistory'
 import { Observable, Scheduler } from 'rxjs'
-import { fromJS, Set } from 'immutable'
+import { fromJS, Set, List, OrderedMap } from 'immutable'
 import { matchPath } from 'react-router'
-import { unary, toPairs, find, type, path } from 'ramda'
+import { unary, find, type, path } from 'ramda'
 import { parse, stringify } from 'query-string'
 import { followLink$, jumpBack$, followAnchor$ } from './intents'
 import log from './log'
@@ -169,7 +169,7 @@ function locationToHandlerAndParams(location, pathToIntent) {
   const match = find(([path]) => {
     route = matchPath(location.pathname, { path, exact: true })
     return !!route
-  }, toPairs(pathToIntent))
+  }, List(OrderedMap(pathToIntent)))
 
   if (!match) return null
   return { params: route.params, handler: match[1], search, hash }
