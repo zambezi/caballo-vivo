@@ -1,7 +1,7 @@
 = Caballo Vivo 
 
 [quote, CJC]
-1177.  los cementerios no deben estrenarse enterrando un hombre muerto sino un caballo vivo 
+_1177._  los cementerios no deben estrenarse enterrando un hombre muerto sino un caballo vivo 
 
 Glue code for pure RxJS applications to connect with React-Router
 
