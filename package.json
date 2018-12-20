@@ -18,7 +18,7 @@
   "homepage": "https://github.com/zambezi/caballo-vivo#readme",
   "dependencies": {
     "history": "^4.7.2",
-    "immutable": "^4.0.0-rc.12",
+    "immutable": ">=3",
     "query-string": "^6.2.0",
     "ramda": "^0.25.0",
     "react": ">=15",
