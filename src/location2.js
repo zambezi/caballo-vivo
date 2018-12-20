@@ -1,14 +1,19 @@
 import createHistory from 'history/createBrowserHistory'
 import log from './log'
-import { fromJS, Set, List, OrderedMap } from 'immutable'
 import { empty, merge, concat, of, asyncScheduler, Observable } from 'rxjs'
+import { fromJS, Set, List, OrderedMap } from 'immutable'
+import { matchPath } from 'react-router'
+import { parse, stringify } from 'query-string'
+import { unary, find, type, path } from 'ramda'
 import {
+  filter,
+  map,
   observeOn,
-  tap,
   publishReplay,
   refCount,
+  skip,
   switchMap,
-  skip
+  tap
 } from 'rxjs/operators'
 
 export const history = createHistory({
@@ -27,10 +32,30 @@ const startLocation$ = of(history.location).pipe(
   refCount()
 )
 
+const historyLocation$ = Observable.create(observer => {
+  history.listen(location => {
+    observer.next(location)
+    currentAction = null
+  })
+}).pipe(tap(log('Location from history.listen')))
+
 export function createLocation$(pathToIntent) {
   console.log('%c pathToIntent', 'background: pink', pathToIntent)
 
-  return merge(createLocationHandler$(pathToIntent))
+  return merge(
+    createLocationHandler$(pathToIntent),
+    concat(
+      startLocation$.pipe(filter(hasNoHandlers(pathToIntent))),
+      historyLocation$
+    )
+  ).pipe(
+    map(completeState),
+    map(completeQuery),
+    map(unary(fromJS)),
+    tap(log('Location broadcasted')),
+    publishReplay(1),
+    refCount()
+  )
 }
 
 function createLocationHandler$(pathToIntent) {
@@ -96,3 +121,19 @@ function runHandler({ handler, params, search, action, hash }) {
   handler(params, search, action, hash)
 }
 
+function hasNoHandlers(pathToIntent) {
+  return function filter(location) {
+    const isManaged = !!locationToHandlerAndParams(location, pathToIntent)
+    return !isManaged
+  }
+}
+
+function completeState(location) {
+  if (!location.state) location.state = {}
+  return location
+}
+
+function completeQuery(location) {
+  if (!location.query) location.query = parse(location.search || '')
+  return location
+}
