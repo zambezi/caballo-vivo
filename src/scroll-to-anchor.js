@@ -1,25 +1,26 @@
-import { Subject, Observable } from 'rxjs'
+import { Subject, Observable, race, empty } from 'rxjs'
+import { map, scan, filter, tap, switchMap, delay } from 'rxjs/operators'
 import log from './log'
 
 const scrollToAnchor$ = new Subject()
 
 scrollToAnchor$
-  .map(state => ({
-    hash: state.getIn(['location', 'hash'], null),
-    navToken: state.getIn(['location', 'state', 'navToken'], null),
-  }))
-  .scan(persistPreviousNavToken, {})
-  .filter(shouldScroll)
-  .do(log('Scroll to anchor'))
-  .switchMap(({ hash }) => {
-    return Observable.race(
-      createImmediateElement$(hash),
-      createEventualElement$(hash),
-      Observable.empty()
-        .delay(10000)
-        .do(log('Scroll to hash timed out'))
+  .pipe(
+    map(state => ({
+      hash: state.getIn(['location', 'hash'], null),
+      navToken: state.getIn(['location', 'state', 'navToken'], null),
+    })),
+    scan(persistPreviousNavToken, {}),
+    filter(shouldScroll),
+    tap(log('Scroll to anchor')),
+    switchMap(({ hash }) => 
+      race(
+        createImmediateElement$(hash),
+        createEventualElement$(hash),
+        empty().pipe(delay(10000), tap(log('Scroll to hash timed out')))
+      )
     )
-  })
+  )
   .subscribe(scrollToElement)
 
 export default scrollToAnchor$

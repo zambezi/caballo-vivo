@@ -1,6 +1,6 @@
 {
   "name": "@zambezi/caballo-vivo",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Caballo Vivo",
   "main": "",
   "scripts": {
@@ -23,7 +23,7 @@
     "ramda": "^0.25.0",
     "react": ">=15",
     "react-router": "^4.3.1",
-    "rxjs": "^5.5.12"
+    "rxjs": ">=6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
