@@ -46,10 +46,8 @@ const historyLocation$ = Observable.create(observer => {
 export function createLocation$(pathToIntent) {
   return merge(
     createLocationHandler$(pathToIntent),
-    concat(
-      startLocation$.pipe(filter(hasNoHandlers(pathToIntent))),
-      historyLocation$
-    )
+    startLocation$.pipe(filter(hasNoHandlers(pathToIntent))),
+    historyLocation$
   ).pipe(
     map(completeState),
     map(completeQuery),
@@ -87,13 +85,12 @@ export function createNavigateTo$(
         history.replace(location)
       }
     }),
-    map(unary(fromJS)),
-    map(location => state => state.set('location', location)),
     tap(() => {
       programmaticNavigationTokens = programmaticNavigationTokens.delete(
         navToken
       )
-    })
+    }),
+    skip()
   )
 }
 
@@ -111,8 +108,8 @@ export const anchorLocation$ = followAnchor$.pipe(
     ).pipe(
       tap(log('New location from anchor navigation')),
       tap(location => history.push(location.toJS())),
-      map(location => state => state.set('location', location)),
-      tap(() => programmaticNavigationTokens.delete(navToken))
+      tap(() => programmaticNavigationTokens.delete(navToken)),
+      skip()
     )
   })
 )
