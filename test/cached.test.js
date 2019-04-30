@@ -4,7 +4,7 @@ import { Map, fromJS } from 'immutable'
 import { of, concat, Observable } from 'rxjs'
 import { scan, finalize } from 'rxjs/operators'
 
-describe('Pluck operator', () => {
+describe('Cached HoF', () => {
 
   beforeEach(() => jest.addMatchers(matchers))
 
