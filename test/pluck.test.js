@@ -8,7 +8,7 @@ describe('Pluck operator', () => {
 
   beforeEach(() => jest.addMatchers(matchers))
 
-  it('Plucks simple keys', done => {
+  it('plucks simple keys', done => {
     const mockCallBack = jest.fn()
     of(Map({a: 1, b: 2}), fromJS({b: { nested: 'li mu bai'}}))
       .pipe(
@@ -23,7 +23,7 @@ describe('Pluck operator', () => {
       .subscribe(mockCallBack)
   })
 
-  it('Plucks complex keys', done => {
+  it('plucks complex keys', done => {
     const mockCallBack = jest.fn()
     of(fromJS({a: 1, b: { c: 'sharp' }}), fromJS({b: { c: { nested: 'li mu bai'}} }))
       .pipe(

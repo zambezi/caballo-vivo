@@ -1,7 +1,6 @@
 import * as matchers from 'jest-immutable-matchers'
 import cached$ from '../src/cached'
-import { Map, fromJS } from 'immutable'
-import { of, concat, Observable } from 'rxjs'
+import { concat, Observable } from 'rxjs'
 import { scan, finalize } from 'rxjs/operators'
 
 describe('Cached HoF', () => {
@@ -16,7 +15,6 @@ describe('Cached HoF', () => {
     const createObservable$ = cached$(key =>  {
       return Observable.create(
         o => {
-          console.log('Inside the observable for', key)
           mockInGenerator(key)
           o.next(`${key}-${key}`)
           o.complete()
@@ -32,7 +30,6 @@ describe('Cached HoF', () => {
       .pipe(
         finalize(
           () => {
-            console.log('finalize')
             const handlerCalls = mockCallBack.mock.calls
             const generatorCalls = mockInGenerator.mock.calls
 
