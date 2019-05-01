@@ -2,7 +2,7 @@
   "name": "@zambezi/caballo-vivo",
   "version": "0.5.0",
   "description": "Caballo Vivo",
-  "main": "lib/",
+  "main": "",
   "scripts": {
     "test": "jest",
     "prepublishOnly": "npm run build && npm test",
