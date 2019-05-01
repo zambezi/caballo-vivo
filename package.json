@@ -2,11 +2,12 @@
   "name": "@zambezi/caballo-vivo",
   "version": "1.0.0",
   "description": "Caballo Vivo",
-  "main": "",
+  "main": "./lib-commonjs",
+  "module": "./src",
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "npm run build && npm test",
-    "build": "babel src -d lib"
+    "prepublishOnly": "npm test && npm run build-commonjs",
+    "build-commonjs": "babel src -d lib-commonjs"
   },
   "repository": {
     "type": "git",
