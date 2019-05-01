@@ -1,5 +1,9 @@
-import { createLocation$, createNavigateTo$ } from '../src/location'
-import { jumpBack$, followLink$ } from '../src/intents'
+import {
+  createLocation$,
+  createNavigateTo$,
+  jumpBack$,
+  followLink$,
+} from '../src'
 
 test.only('Create location with a pathToIntent and navigate, then navigate back', done => {
   function whereverHandler(params, search, action, hash) {

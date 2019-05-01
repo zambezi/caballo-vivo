@@ -1,11 +1,10 @@
 import * as matchers from 'jest-immutable-matchers'
-import stow from '../src/stow'
+import { stow } from '../src'
 import { Map, fromJS } from 'immutable'
 import { of } from 'rxjs'
 import { scan, finalize } from 'rxjs/operators'
 
 describe('Stow operator', () => {
-
   beforeEach(() => jest.addMatchers(matchers))
 
   it('stows data with simple keys', done => {
@@ -13,11 +12,13 @@ describe('Stow operator', () => {
     of('canarias', 'espóticas')
       .pipe(
         stow('islas'),
-        scan(reduce, Map({a: 1})),
+        scan(reduce, Map({ a: 1 })),
         finalize(() => {
           const calls = mockCallBack.mock.calls
-          expect(calls[0][0]).toEqualImmutable(Map({a: 1, islas: 'canarias'}))
-          expect(calls[1][0]).toEqualImmutable(Map({a: 1, islas: 'espóticas'}))
+          expect(calls[0][0]).toEqualImmutable(Map({ a: 1, islas: 'canarias' }))
+          expect(calls[1][0]).toEqualImmutable(
+            Map({ a: 1, islas: 'espóticas' })
+          )
           done()
         })
       )
@@ -29,17 +30,20 @@ describe('Stow operator', () => {
     of('canarias', 'espóticas')
       .pipe(
         stow(['mareas', 'islas']),
-        scan(reduce, Map({a: 1 })),
+        scan(reduce, Map({ a: 1 })),
         finalize(() => {
           const calls = mockCallBack.mock.calls
-          expect(calls[0][0]).toEqualImmutable(fromJS({a: 1, mareas: {islas: 'canarias'}}))
-          expect(calls[1][0]).toEqualImmutable(fromJS({a: 1, mareas: {islas: 'espóticas'}}))
+          expect(calls[0][0]).toEqualImmutable(
+            fromJS({ a: 1, mareas: { islas: 'canarias' } })
+          )
+          expect(calls[1][0]).toEqualImmutable(
+            fromJS({ a: 1, mareas: { islas: 'espóticas' } })
+          )
           done()
         })
       )
       .subscribe(mockCallBack)
   })
-
 })
 
 function reduce(state, fn) {

@@ -1,5 +1,5 @@
-import { curry, __ } from "ramda"
-import { map } from "rxjs/operators"
+import { curry, __ } from 'ramda'
+import { map } from 'rxjs/operators'
 
 export default function cook(reducer) {
   return function cook(source$) {

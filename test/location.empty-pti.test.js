@@ -1,5 +1,4 @@
-import { createLocation$ } from '../src/location'
-import { followLink$ } from '../src/intents'
+import { createLocation$, followLink$ } from '../src'
 
 test('Create location with a empty pathToIntent and follow a link', done => {
   const location$ = createLocation$({})
