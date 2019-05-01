@@ -1,10 +1,12 @@
 {
   "name": "@zambezi/caballo-vivo",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Caballo Vivo",
   "main": "",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build && npm test",
+    "build": "babel src -d lib"
   },
   "repository": {
     "type": "git",
@@ -26,9 +28,11 @@
     "rxjs": ">=6"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
     "jest": "^23.6.0",
     "jest-immutable-matchers": "^2.0.1",
     "regenerator-runtime": "^0.13.1"

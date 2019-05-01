@@ -1,5 +1,5 @@
-import createHistory from 'history/createBrowserHistory'
 import log from './log'
+import { createBrowserHistory } from 'history'
 import { empty, merge, concat, of, asyncScheduler, Observable } from 'rxjs'
 import { followLink$, jumpBack$, followAnchor$ } from './intents'
 import { fromJS, Set, List, OrderedMap } from 'immutable'
@@ -17,7 +17,7 @@ import {
   tap,
 } from 'rxjs/operators'
 
-export const history = createHistory({
+export const history = createBrowserHistory({
   getUserConfirmation: () => false,
   basename:
     process.env.REACT_APP_ROUTER_BASE_URL || process.env.PUBLIC_URL || '',
