@@ -5,6 +5,7 @@
   "main": "lib/",
   "scripts": {
     "test": "jest",
+    "prepublishOnly": "npm run build && npm test",
     "build": "babel src -d lib"
   },
   "repository": {
