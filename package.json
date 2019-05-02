@@ -4,6 +4,7 @@
   "description": "Caballo Vivo",
   "main": "./lib-commonjs",
   "module": "./src",
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "prepublishOnly": "npm test && npm run build-commonjs",
