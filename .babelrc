@@ -4,6 +4,12 @@
     "stage-3"
   ],
   "env": {
+    "commonjs": {
+      "presets": [
+        [ "env", { "modules": "commonjs" } ],
+        "stage-3"
+      ],
+    },
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
     }
