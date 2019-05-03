@@ -8,7 +8,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "npm test && run build",
+    "prepublishOnly": "npm test && npm run build",
     "build": "npm run build-commonjs && npm run build-module && npm run build-es2015",
     "build-commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib-commonjs",
     "build-module": "cross-env BABEL_ENV=module babel src -d lib-module",
