@@ -4,13 +4,14 @@
   "description": "Caballo Vivo",
   "main": "./lib-commonjs",
   "module": "./lib-module",
-  "es2015": "./src",
+  "es2015": "./lib-es2015",
   "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "npm test && npm run build-commonjs && npm run build-module",
+    "prepublishOnly": "npm test && npm run build-commonjs && npm run build-module && npm run build-es2015",
     "build-commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib-commonjs",
-    "build-module": "babel src -d lib-module"
+    "build-module": "cross-env BABEL_ENV=module babel src -d lib-module",
+    "build-es2015": "cross-env BABEL_ENV=es2015 babel src -d lib-es2015"
   },
   "repository": {
     "type": "git",
