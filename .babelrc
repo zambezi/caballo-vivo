@@ -1,11 +1,24 @@
 {
-  "presets": [
-    [
-      "env",
-      {
-        "modules": "commonjs"
-      }
-    ],
-    "stage-3"
-  ]
+  "env": {
+    "commonjs": {
+      "presets": [
+        [ "env", { "modules": "commonjs" } ],
+        "stage-3"
+      ],
+    },
+    "module": {
+      "presets": [
+        [ "env", { "modules": false } ],
+        "stage-3"
+      ],
+    },
+    "es2015": {
+      "presets": [
+        "stage-3"
+      ],
+    },
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }
