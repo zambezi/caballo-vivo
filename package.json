@@ -1,6 +1,6 @@
 {
   "name": "@zambezi/caballo-vivo",
-  "version": "1.0.1-0",
+  "version": "1.0.1-1",
   "description": "Caballo Vivo",
   "main": "./lib-commonjs",
   "module": "./lib-module",
