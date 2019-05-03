@@ -1,11 +1,6 @@
 {
   "presets": [
-    [
-      "env",
-      {
-        "modules": "commonjs"
-      }
-    ],
+    [ "env", { "modules": false } ],
     "stage-3"
   ]
 }

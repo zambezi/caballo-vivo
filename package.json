@@ -3,12 +3,14 @@
   "version": "1.0.1-0",
   "description": "Caballo Vivo",
   "main": "./lib-commonjs",
-  "module": "./src",
+  "module": "./lib-module",
+  "es2015": "./src",
   "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "npm test && npm run build-commonjs",
-    "build-commonjs": "babel src -d lib-commonjs"
+    "prepublishOnly": "npm test && npm run build-commonjs && npm run build-module",
+    "build-commonjs": "babel src -d lib-commonjs --presets env,stage-3 --no-babelrc",
+    "build-module": "babel src -d lib-module"
   },
   "repository": {
     "type": "git",
