@@ -2,17 +2,14 @@
   "name": "@zambezi/caballo-vivo",
   "version": "1.0.1",
   "description": "Caballo Vivo",
-  "main": "./lib-commonjs",
-  "module": "./lib-module",
-  "es2015": "./lib-es2015",
-  "sideEffects": false,
+  "main": "dist/caballo-vivo.cjs.js",
+  "module": "dist/caballo-vivo.esm.js",
+  "browser": "dist/caballo-vivo.umd.js",
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "npm test && npm run build",
-    "build": "npm run build-commonjs && npm run build-module && npm run build-es2015",
-    "build-commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib-commonjs",
-    "build-module": "cross-env BABEL_ENV=module babel src -d lib-module",
-    "build-es2015": "cross-env BABEL_ENV=es2015 babel src -d lib-es2015"
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -34,14 +31,13 @@
     "rxjs": ">=6"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.2.0",
     "jest": "^23.6.0",
     "jest-immutable-matchers": "^2.0.1",
-    "regenerator-runtime": "^0.13.1"
+    "regenerator-runtime": "^0.13.1",
+    "rollup": "^1.0.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
   }
 }
