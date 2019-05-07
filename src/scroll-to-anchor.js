@@ -13,11 +13,14 @@ scrollToAnchor$
     scan(persistPreviousNavToken, {}),
     filter(shouldScroll),
     tap(log('Scroll to anchor')),
-    switchMap(({ hash }) => 
+    switchMap(({ hash }) =>
       race(
         createImmediateElement$(hash),
         createEventualElement$(hash),
-        empty().pipe(delay(10000), tap(log('Scroll to hash timed out')))
+        empty().pipe(
+          delay(10000),
+          tap(log('Scroll to hash timed out'))
+        )
       )
     )
   )

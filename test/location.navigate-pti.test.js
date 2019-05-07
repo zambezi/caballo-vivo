@@ -1,5 +1,4 @@
-import { createLocation$, createNavigateTo$ } from '../src/location'
-import { followLink$ } from '../src/intents'
+import { createLocation$, createNavigateTo$, followLink$ } from '../src/'
 
 test('Create location with a pathToIntent and navigate', done => {
   function whereverHandler(params, search, action, hash) {

@@ -125,10 +125,7 @@ function createLocationHandler$(pathToIntent) {
   )
 
   function toMaybeHandlerAndParams$(location) {
-    const handlerAndParams = locationToHandlerAndParams(
-      location,
-      pathToIntent
-    )
+    const handlerAndParams = locationToHandlerAndParams(location, pathToIntent)
     return handlerAndParams
       ? of(handlerAndParams).pipe(tap(log('Initial location handler')))
       : empty()
@@ -154,10 +151,7 @@ function locationToHandlerAndParams(location, pathToIntent) {
 function blockManagedPaths(observer, pathToIntent) {
   return function testBlock(location, action) {
     if (isProgrammaticNavigation(location)) return undefined
-    const handlerAndParams = locationToHandlerAndParams(
-      location,
-      pathToIntent
-    )
+    const handlerAndParams = locationToHandlerAndParams(location, pathToIntent)
     if (!handlerAndParams) return undefined
     currentAction = action
     handlerAndParams.action = action
