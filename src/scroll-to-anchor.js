@@ -13,10 +13,17 @@ scrollToAnchor$
     scan(persistPreviousNavToken, {}),
     filter(shouldScroll),
     tap(log('Scroll to anchor')),
-    switchMap(({ hash }) =>
+    map(({hash}) => {
+      // selectors over ID are invalid if the ID starts with a number,
+      // so use an ID-based attribute selector
+
+      const id = hash.substring(1) // strip the # symbol to leave just the ID
+      return `[id="${id}"]`
+    }),
+    switchMap(selector =>
       race(
-        createImmediateElement$(hash),
-        createEventualElement$(hash),
+        createImmediateElement$(selector),
+        createEventualElement$(selector),
         empty().pipe(
           delay(10000),
           tap(log('Scroll to hash timed out'))
