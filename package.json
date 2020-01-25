@@ -25,11 +25,13 @@
   },
   "homepage": "https://github.com/zambezi/caballo-vivo#readme",
   "peerDependencies": {
+    "react": "^16.8.0"
+  },
+  "dependencies": {
     "history": "^4.7.2",
     "query-string": "^5.0.0||^6.0.0",
     "immutable": "^3.0.0||^4.0.0",
     "react-router": "^4.0.0||^5.0.0",
-    "react": "^16.8.0",
     "rxjs": "^6.0.0",
     "ramda": "^0.26.0"
   },
@@ -40,15 +42,9 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.2.0",
-    "history": "^4.7.2",
-    "immutable": "^3.0.0||^4.0.0",
     "jest": "^24.9.0",
     "jest-immutable-matchers": "^2.0.1",
-    "query-string": "^5.0.0||^6.0.0",
-    "ramda": "^0.26.0",
     "react": "^16.8.0",
-    "react-router": "^4.0.0||^5.0.0",
-    "regenerator-runtime": "^0.13.1",
-    "rxjs": "^6.0.0"
+    "regenerator-runtime": "^0.13.1"
   }
 }
