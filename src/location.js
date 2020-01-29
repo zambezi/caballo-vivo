@@ -132,7 +132,7 @@ function createLocationHandler$(pathToIntent) {
   }
 
   function handlerForManagedPaths(observer) {
-    history.block(blockManagedPaths(observer, pathToIntent))
+    return history.block(blockManagedPaths(observer, pathToIntent))
   }
 }
 
