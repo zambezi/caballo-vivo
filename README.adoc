@@ -3,7 +3,122 @@
 [quote, CJC]
 _1177._  los cementerios no deben estrenarse enterrando un hombre muerto sino un caballo vivo 
 
-Glue code for pure RxJS applications to connect with React-Router
+Thin, opinionated layer for pure RxJS applications to connect with React-Router. It has the advantage of scaling well, allowing more concise and expressive code and separating business logic from end components better.
 
-For a sample application, please check: https://github.com/gabrielmontagne/fa-doodle
+Here's the equivalent implementation of the Redux Reddit advanced tutorial with caballo-vivo, in less than 100 lines of code (https://codesandbox.io/s/caballo-vivo-reddit-w88kg[online sandbox]):
+
+[source,javascript]
+----
+import React from "react"
+import { render } from "react-dom"
+import { OrderedMap, Map } from "immutable"
+import { partialRight } from "ramda"
+import { Subject, merge, concat, of, from } from "rxjs"
+import {
+  map,
+  distinctUntilChanged,
+  scan,
+  catchError,
+  switchMap
+} from "rxjs/operators"
+import { Router, Switch, Route, Link } from "react-router-dom"
+import {
+  createLocation$,
+  createNavigateTo$,
+  history,
+  flog,
+  stow
+} from "@zambezi/caballo-vivo"
+import ClipLoader from "react-spinners/ClipLoader"
+import "./index.css"
+
+const getPosts$ = new Subject()
+
+const pathToIntent = OrderedMap([
+  ["/:subreddit", ({ subreddit }) => getPosts$.next({ subreddit })],
+  ["/", () => getPosts$.next({ subreddit: "all" })]
+]) // <1>
+
+const location$ = createLocation$(pathToIntent).pipe(
+  map(location => state => state.set("location", location))
+) // <1>
+
+const redditJourney$ = merge(
+  getPosts$.pipe( // <2>
+    switchMap(({ subreddit }) =>
+      concat(
+        of(state => state.set("loading", true)), // <3>
+        from(fetch(`https://www.reddit.com/r/${subreddit}.json`)).pipe(
+          switchMap(res =>
+            from(res.json()).pipe(
+              map(json => json.data.children.map(child => child.data))
+            )
+          ),
+          stow("subreddit") // <4>
+        ),
+        createNavigateTo$(subreddit), // <5>
+        of(state => state.set("loading", false))
+      )
+    ),
+    catchError(() =>
+      of(state => state.set("error", "This subreddit is not available"))
+    )
+  )
+)
+
+merge(location$, redditJourney$)
+  .pipe(
+    scan((state, changeFn) => changeFn(state), Map()), // <6>
+    distinctUntilChanged((s1, s2) => s1.equals(s2)), // <7>
+    catchError(e => of(Map({ error: e }))),
+    flog("Render state"), // <8>
+    map(toView)
+  )
+  .subscribe(partialRight(render, [document.getElementById("root")]))
+
+function toView(state) { // <9>
+  if (state.has("error")) return <p>{state.get("error")}</p>
+  if (state.get("loading"))
+    return (
+      <div className="loader">
+        <ClipLoader />
+      </div>
+    )
+  return (
+    <Router history={history}>
+      <section className="links">
+        {["all", "reactjs", "rxjs", "javascript", "node"].map(l => (
+          <Link key={l} to={l}>{`r/${l}`}</Link>
+        ))}
+      </section>
+      <hr />
+      <Switch>
+        <Route path="/:subreddit">
+          <ul>
+            {state.get("subreddit").map(post => (
+              <li key={post.id}>
+                <a href={post.url} target="_blank" rel="noopener noreferrer">
+                  {post.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Route>
+      </Switch>
+    </Router>
+  )
+}
+----
+
+<1> Passing a map to `createLocation$` will block the hisory when the route changes and the new url matches one of the keys.
+<2> We listen to the `getPosts$` intent, triggered by the routes above, to kickstart a complex series of asynchronous events (set/unset loader flag, download subreddit).
+<3> When we emit reducer functions, they get executed by the store (see below). All that a reducer function does is get the current state snapshot and return a new snapshot.
+<4> https://github.com/zambezi/caballo-vivo/blob/master/src/stow.js[stow] is just an operator which emits a reducer function to `set` the value on a key or path in the store. It's an operation so common that it got its own operator.
+<5> `createNavigateTo$` unblocks the history and changes the address in the URL bar. At this point, all the routes matching new address can render.
+<6> This is the heart of the store: a `scan` which applies reducer functions to the current state and returns the new state.
+<7> Leveraging Immutable, duplicated states are not rendered.
+<8> https://github.com/zambezi/caballo-vivo/blob/master/src/stow.js[flog] is a side effect that logs its first argument to the logging system. Try `localStorage.setItem("cv-log", true)` to see the logs.
+<9> The view function is just a function which takes state snapshots and generates JSX.
+
+For a more advanced example application, please check: https://github.com/gabrielmontagne/fa-doodle
 
