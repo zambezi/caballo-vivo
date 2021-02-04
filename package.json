@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/zambezi/caballo-vivo#readme",
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "^16.8.0||^17.0.0"
   },
   "dependencies": {
     "history": "^4.7.2",
