@@ -17,8 +17,29 @@ import {
   tap,
 } from 'rxjs/operators'
 
+let preventNavigationCallback = null
+let continueNavigationCallback = null
+
+export const preventNavigation = (callback) => {
+  preventNavigationCallback = callback
+  return () => {
+    preventNavigationCallback = null
+    continueNavigationCallback = null
+  }
+}
+
 export const history = createBrowserHistory({
-  getUserConfirmation: () => false,
+  getUserConfirmation: (_, historyCallback) => {
+    if (preventNavigationCallback) {
+      preventNavigationCallback(shouldContinue => {
+        if (shouldContinue) {
+          continueNavigationCallback ? continueNavigationCallback() : historyCallback(shouldContinue)
+        }
+      })
+    } else {
+      return false
+    }
+  },
   basename:
     process.env.REACT_APP_ROUTER_BASE_URL || process.env.PUBLIC_URL || '',
 })
@@ -152,6 +173,14 @@ function blockManagedPaths(observer, pathToIntent) {
   return function testBlock(location, action) {
     if (isProgrammaticNavigation(location)) return undefined
     const handlerAndParams = locationToHandlerAndParams(location, pathToIntent)
+    if (preventNavigationCallback) {
+      continueNavigationCallback = handlerAndParams ? () => {
+        currentAction = action
+        handlerAndParams.action = action
+        observer.next(handlerAndParams)
+      } : null
+      return 'blocked'
+    }
     if (!handlerAndParams) return undefined
     currentAction = action
     handlerAndParams.action = action
